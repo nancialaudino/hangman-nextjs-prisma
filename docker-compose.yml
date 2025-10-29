@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  web:
+    # On construit l’image à partir du Dockerfile présent dans le même dossier
+    build: .
+    container_name: hangman-app
+
+    # On associe le port 3000 du conteneur au port 3000 de ta machine
+    ports:
+      - "3000:3000"
+
+    # On monte un volume pour conserver le fichier de base de données SQLite
+    volumes:
+      - ./prisma:/app/prisma
+
+    # Variable d’environnement pour Prisma
+    environment:
+      - DATABASE_URL=file:./prisma/dev.db
+
+    # Redémarrage automatique si le conteneur s’arrête
+    restart: unless-stopped
